@@ -4,41 +4,34 @@
 ##############################################
 
 import pymysql
-import random
 
 HOST = 'localhost'
 USER = 'test_root'
-PWD = '2018'
-DB = 'test'
+PWD = '20171522'
+DB = 'test_mttb'
 
 
-connection = pymysql.connect(host=HOST, user=USER, password=PWD,
-                             db=DB, charset='utf8')
-
-
-mdarr = []
-for i in range(10):
-    mdarr.append(random.randint(1, 50))
-    
-sccarr = []
-for i in range(10):
-    sccarr.append(random.randint(1, 50))
-
-tmarr = []
-for i in range(10):
-    tmarr.append(random.randint(1, 50))
-    
-csarr = []
-for i in range(10):
-    csarr.append(random.randint(1, 50))
-    
-sql = '''INSERT into _automatic(md, scc, tm, cs)
-            VALUE (%i, %i, %i, %i)'''
-
+connection = pymysql.connect(host=HOST, 
+                             user=USER, 
+                             password=PWD,
+                             db=DB, 
+                             charset='utf8')
 cursor = connection.cursor()
 
-for i in range(10):
-    cursor.execute(sql, (mdarr[i], sccarr[i], tmarr[i], csarr[i]))
-    connection.commit
+sql = "INSERT INTO _automatic (md, scc, tm, cs) VALUES (%s, %s, %s, %s)"
+
+lst = []
+
+for i in range(12, 20):
+    md = i; scc = i; tm = i; cs = i
+    val = (md, scc, tm, cs)
+    lst.append(val)
     
+
+cursor.executemany(sql, lst)
+
+connection.commit()
+
 connection.close()
+
+
