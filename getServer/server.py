@@ -4,6 +4,7 @@
 ##############################################
 
 import json
+from datetime import datetime, date
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.parse as urlparser
 import sqlControler
@@ -26,8 +27,8 @@ class requestHandler(BaseHTTPRequestHandler):
         print(user_path)
         
         if user_path == 'app': # If Sender is App
-            if path.endswith('/getauto'):
-                body = json.dumps(sqlControler.sqlControler.getAuto())
+            if path.endswith('/getdata'):
+                body = json.dumps(sqlControler.sqlControler.getData(), indent=4, sort_keys=True, default=str)
                 self._set_headers()
                 self.wfile.write(body.encode())
         
