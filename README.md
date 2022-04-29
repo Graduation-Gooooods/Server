@@ -10,5 +10,5 @@
 ###      - app req to server "chmode" using HTTP GET, than server send to ard chmode. (POST)
 
 ### future work: ard create at server ard's data(passive, automatic, training) using UDP.
-### app req to server NL order, than server run NLP algorithm and send to ard NL order.
+### - app req to server NL order, than server run NLP algorithm and send to ard NL order.
 
