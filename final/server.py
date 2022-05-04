@@ -1,17 +1,17 @@
 #############################################
 # 2022-05-04 server
 # using sqlControler
-# send data to arduino using socket (UDP)
+# fin
 ##############################################
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import socket
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.parse as urlparser
 import sqlControler
 
 JSONTYPE = 'Application/json'
-HOST = '192.168.0.14'
-PORT = 2017
+HOST = '192.168.0.14' # Open IP_ADDR
+PORT = 2017           # Open PORT 
 
 class requestHandler(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -26,7 +26,7 @@ class requestHandler(BaseHTTPRequestHandler):
         user_path = path.split('/')[1]
         print(f'User path: {user_path}')
         
-        if user_path == 'get': # response about getting 10 data
+        if user_path == 'get': # Return 10 latest data for that mode
             if path.endswith('/passive'):
                 body = { 'total':sqlControler.sqlControler.getPassive() }
                 body = json.dumps(body, indent=4, sort_keys=True, default=str)
@@ -44,7 +44,7 @@ class requestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(body.encode())
             print(f'Complete send 10 data {user_path}')
         
-        elif user_path == 'set':
+        elif user_path == 'set': # Adjust the tension on the finger
             finger, tension = path.split('/')[2], path.split('/')[3]
             data = 's' + finger + tension
             print(data)
@@ -54,7 +54,7 @@ class requestHandler(BaseHTTPRequestHandler):
             self._set_headers()
             print(f'Complete {user_path} tension')
         
-        elif user_path == 'chmode':
+        elif user_path == 'chmode': # Change mode
             mode = path.split('/')[2]
             data = 'm' + mode
             print(mode)
